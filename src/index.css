@@ -1,0 +1,47 @@
+.tweet {
+  border: 1px solid #cccccc;
+  width: 564px;
+  font-size: 20px;
+  min-height: 68px;
+  line-height: 18px;
+  display: flex;
+  font-family: "Helvetica", arial, sans-serif;
+  padding: 20px;
+}
+
+.avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.name {
+  font-weight: bold;
+  margin-bottom: 0.5em;
+  margin-right: 0.3em;
+}
+
+.handle {
+  color: #8899a6;
+  font-size: 13px;
+}
+.time {
+  padding: 0.3em;
+  color: #8899a6;
+}
+.time::before {
+  content: "\007";
+  padding-right: 0.3em;
+}
+
+.ButtonGroup {
+  margin-top: 20px;
+  margin-left: 2px;
+  font-size: 1.4em;
+  color: #aab8c2;
+}
+
+.ButtonGroup i {
+  width: 80px;
+}
