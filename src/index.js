@@ -1,23 +1,25 @@
 import React from 'react';
 import ReactDom from 'react-dom';
+import Moment from 'moment';
 import './index.css';
+import PropTypes from 'prop-types';
 
 function Helloworld(){
   return (<div>Hello world</div>);
 }
 
-function Tweet(){
+function Tweet({tweet}){
   return (<div className="tweet">
-    <Avatar/>
+    <Avatar hash={tweet.gravatar}/>
     
 
     <div className="handlerGroup">
-      <NamewithHandler/> <Time/>
-      <Message/>
+      <NamewithHandler author={tweet.author}/> <Time time={tweet.timestamp}/>
+      <Message message={tweet.message}/>
       <div className="ButtonGroup">
         <ReplyButton/>
-        <RetweetButton/>
-        <LikeButton/>
+        <RetweetButton count={tweet.retweets}/>
+        <LikeButton count={tweet.likes}/>
         <MoreOptionButton/>
         
       </div>
@@ -28,37 +30,77 @@ function Tweet(){
   </div>);
 }
 
-const Time=()=>(
-  <span className="time">3h ago</span>
+var testtweet={
+  message:'say something about dancing party',
+  gravatar:"xyz",
+  author:{
+    handle:"carpusor",
+    name:'Merry Brown'
+  },
+  likes:5,
+  retweets:4,
+  timestamp: "2016-07-30 21:24:37"
+};
+
+// console.log(typeof testtweet);
+
+function getCountNumber(count){
+  if(count>0){
+    return (
+      count
+    );
+  }else{
+    return null;
+  }
+}
+
+const Time=({time})=>(
+  <span className="time">{Moment(time).fromNow()}</span>
 )
 
 const ReplyButton= ()=>(
   <i className="fa fa-reply reply-button"/>
 )
 
-const RetweetButton= ()=>(
-  <i className="fa fa-retweet retweet-button"/>
+const RetweetButton= ({count})=>(
+ <span className="retweet-button"> <sub>{getCountNumber(count)}</sub><i className="fa fa-retweet "/></span>
 )
 
-const LikeButton= ()=>{
- return  <i className="fa fa-heart like-button"/>
+const LikeButton= ({count})=>{
+ return  <span  className="like-button"> <sub>{count ? count : null }</sub><i className="fa fa-heart "/></span>
 }
 
 const MoreOptionButton = ()=>(
   <i className="fa fa-ellipsis-h option-button"/>
 )
 
-function Avatar(){
-  return (<img src="https://www.gravatar.com/avatar/nothing" className="avatar" alt="avatar"/>)
+function Avatar({hash}){
+  let url=`https://www.gravatar.com/avatar/${hash}`;
+  return (<img src={url} className="avatar" alt="avatar"/>)
 }
 
-function Message(){
-  return (<p className="message">This is less than 140 characters!</p>);
+function Message({message}){
+  return (<p className="message">{message}</p>);
 }
-function NamewithHandler(){
-  return (<span className="handler"><span className="name">Your Name</span><span className="handle">@yourhandle</span></span>);
+function NamewithHandler({author}){
+  return (<span className="handler"><span className="name">{author.name}</span><span className="handle">@{author.handle}</span></span>);
 }
 
 
+LikeButton.propTypes={
+  count:PropTypes.number
+};
 
-ReactDom.render(<Tweet/>,document.querySelector('#root'));
+NamewithHandler.propTypes={
+  author:PropTypes.shape({
+    handle:PropTypes.string.isRequired,
+    name:PropTypes.string.isRequired
+  }).isRequired
+}
+
+Tweet.propTypes={
+  tweet:PropTypes.object.isRequired
+};
+
+
+ReactDom.render(<Tweet tweet={testtweet} />,document.querySelector('#root'));
