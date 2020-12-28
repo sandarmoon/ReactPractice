@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDom from 'react-dom';
 import Moment from 'moment';
 import './index.css';
+import PropTypes from 'prop-types';
 
 function Helloworld(){
   return (<div>Hello world</div>);
@@ -40,6 +41,8 @@ var testtweet={
   retweets:4,
   timestamp: "2016-07-30 21:24:37"
 };
+
+// console.log(typeof testtweet);
 
 function getCountNumber(count){
   if(count>0){
@@ -83,6 +86,21 @@ function NamewithHandler({author}){
   return (<span className="handler"><span className="name">{author.name}</span><span className="handle">@{author.handle}</span></span>);
 }
 
+
+LikeButton.propTypes={
+  count:PropTypes.number
+};
+
+NamewithHandler.propTypes={
+  author:PropTypes.shape({
+    handle:PropTypes.string.isRequired,
+    name:PropTypes.string.isRequired
+  }).isRequired
+}
+
+Tweet.propTypes={
+  tweet:PropTypes.object.isRequired
+};
 
 
 ReactDom.render(<Tweet tweet={testtweet} />,document.querySelector('#root'));
